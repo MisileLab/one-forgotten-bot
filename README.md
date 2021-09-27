@@ -1,6 +1,7 @@
-# FurLuck-Bot
-bot using slash command   
+# One Forgotten Bot
+bot using slash command (Fork Version of Furluck bot)   
 [![Python](https://img.shields.io/badge/python-latest-blue.svg?logo=python)](https://python.org)
+[![Rust](https://img.shields.io/badge/rust-latest-blue.svg?logo=rust)](https://www.rust-lang.org)
 
 ## Donate
 Patreon : https://patreon.com/MisileLab   
