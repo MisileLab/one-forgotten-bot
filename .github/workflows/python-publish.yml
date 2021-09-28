@@ -18,9 +18,12 @@ jobs:
         pip install setuptools wheel twine
         pip install -r requirements.txt
         pip install bandit
-    - name: Build and publish
-      env:
-        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        pip install flake8
+        pip install pylint
+    - name: bandit
       run:
         bandit -r ${{ env.working-directory }}
+    - name: flake8
+      run: flake8 -r ${{ env.working-directory }}
+    - name: pylint
+      run: pylint -r ${{ env.working-directory }} --load-plugins=pylint.extensions.bad_builtin
