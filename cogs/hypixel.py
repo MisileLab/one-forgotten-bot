@@ -1,4 +1,3 @@
-from disnake.ext import commands
 from disnake import slash_command, ActionRow, SlashInteraction
 from disnake import app_commands as slash
 from disnake import OptionType as Type
@@ -17,7 +16,7 @@ class hypixel(Cog):
     # noinspection PyUnusedLocal
     @slash_command(name="hypixel", description="하이픽셀 api를 사용하는 엄청난 명령어들")
     @slash.guild_only()
-    async def _hypixel(self, inter: SlashInteraction): # empty
+    async def _hypixel(self, inter: SlashInteraction):  # empty
         pass
 
     playeroption = NoneSlashCommand()

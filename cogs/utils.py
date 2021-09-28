@@ -1,4 +1,3 @@
-from disnake.ext import commands
 from .modules.module2 import NoneSlashCommand
 from disnake import OptionType as Type
 from disnake import application_commands as slash
