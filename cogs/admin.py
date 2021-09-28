@@ -1,7 +1,8 @@
-from dislash import slash_command, Type, SlashInteraction
-from dislash import application_commands as slash
-from discord.ext import commands
-import discord
+from disnake import slash_command, Type
+from disnake import application_commands as slash
+from disnake.ext import commands
+from disnake.ext.commands import Context
+import disnake
 import time
 from .modules import module1 as md1
 from .modules.module2 import NoneSlashCommand
@@ -19,7 +20,7 @@ class admin(commands.Cog):
     @slash_command(name="kick", description="상대를 서버 밖으로 날리는 명령어", options=kickoption.options)
     @slash.has_guild_permissions(kick_members=True)
     @slash.bot_has_guild_permissions(kick_members=True)
-    async def _kick(self, inter: SlashInteraction):
+    async def _kick(self, inter: Context):
         kickmember = inter.get('member')
         reason = inter.get('reason', None)
         await kickmember.kick(reason=reason)
@@ -32,8 +33,8 @@ class admin(commands.Cog):
     @slash_command(name="ban", description="상대를 서버 밖으로 영원히 날리는 명령어", options=banoption.options)
     @slash.has_guild_permissions(ban_members=True)
     @slash.bot_has_guild_permissions(ban_members=True)
-    async def _ban(self, inter: SlashInteraction):
-        banmember: discord.Member = inter.get('member')
+    async def _ban(self, inter: Context):
+        banmember: disnake.Member = inter.get('member')
         reason = inter.get('reason', None)
         await banmember.ban()
         await inter.reply(f"<@{inter.author.id}>님으로 인하여 <@{banmember.id}>가 밴되었습니다.")
@@ -49,7 +50,7 @@ class admin(commands.Cog):
     @slash_command(name="clean", description="채팅청소하는 엄청난 명령어", options=cleanoption.options)
     @slash.has_guild_permissions(manage_messages=True)
     @slash.bot_has_guild_permissions(manage_messages=True)
-    async def _clean(self, inter: SlashInteraction):
+    async def _clean(self, inter: Context):
         amount: int = inter.get('amount')
         channel1 = inter.channel
         await channel1.purge(limit=int(amount))
@@ -64,10 +65,10 @@ class admin(commands.Cog):
     @slash_command(name="mute", description="상대방을 입막습니다! 읍읍", options=muteoption.options)
     @slash.has_guild_permissions(manage_messages=True)
     @slash.bot_has_guild_permissions(manage_messages=True)
-    async def _mute(self, inter: SlashInteraction):
-        member: discord.Member = inter.get('member')
+    async def _mute(self, inter: Context):
+        member: disnake.Member = inter.get('member')
         reason = inter.get('reason', None)
-        role1 = discord.utils.get(inter.guild.roles, name='뮤트')
+        role1 = disnake.utils.get(inter.guild.roles, name='뮤트')
         await md1.mute_command(role1, inter, member, reason)
 
     unmuteoption = NoneSlashCommand()
@@ -77,11 +78,11 @@ class admin(commands.Cog):
     @slash_command(name="unmute", description="상대방을 입 막지 않습니다. 뮤트 멈춰!", options=unmuteoption.options)
     @slash.has_guild_permissions(manage_messages=True)
     @slash.bot_has_guild_permissions(manage_messages=True)
-    async def _unmute(self, inter: SlashInteraction):
-        member: discord.Member = inter.get('member')
+    async def _unmute(self, inter: Context):
+        member: disnake.Member = inter.get('member')
         reason = inter.get('reason', None)
         guild = inter.guild
-        role1 = discord.utils.get(guild.roles, name='뮤트')
+        role1 = disnake.utils.get(guild.roles, name='뮤트')
         await member.remove_roles(role1, reason=reason)
         await inter.reply(md2.get_unmute_string(reason, inter, member))
 
@@ -89,8 +90,8 @@ class admin(commands.Cog):
     getwarnoption.add_option(name="member", description="누구의 주의를 볼거임?", type=Type.USER, required=False)
 
     @slash_command(name="getwarn", description="주의를 보는 세상 간단한 명령어", options=getwarnoption.options)
-    async def _getwarn(self, inter: SlashInteraction):
-        member: discord.Member = inter.get('member', inter.author.id)
+    async def _getwarn(self, inter: Context):
+        member: disnake.Member = inter.get('member', inter.author.id)
         warndata = md1.warn(memberid=member.id, amount=0, get=True)
         await inter.reply(f"{member.display_name}님의 주의 개수는 {warndata['warn']}개에요!")
 
@@ -102,7 +103,7 @@ class admin(commands.Cog):
     @slash.has_guild_permissions(administrator=True)
     @slash.bot_has_guild_permissions(administrator=True)
     @slash_command(name="warn", description="주의를 주는 세상 복잡한 명령어", options=warnoption.options)
-    async def _warn(self, inter: SlashInteraction):
+    async def _warn(self, inter: Context):
         member = inter.get('member')
         reason = inter.get('reason', None)
         amount = inter.get('amount')
@@ -119,7 +120,7 @@ class admin(commands.Cog):
     @slash.has_guild_permissions(administrator=True)
     @slash.bot_has_guild_permissions(administrator=True)
     @slash_command(name="unwarn", description="주의를 빼는 세상 이상한 명령어", options=unwarnoption.options)
-    async def _unwarn(self, inter: SlashInteraction):
+    async def _unwarn(self, inter: Context):
         member = inter.get('member')
         reason = inter.get('reason', None)
         amount = inter.get('amount')
@@ -134,9 +135,9 @@ class admin(commands.Cog):
     @slash.has_guild_permissions(administrator=True)
     @slash.bot_has_guild_permissions(administrator=True)
     @slash_command(name="hellochannel", description="인사 채널을 설정하는 명령어", options=hellochannel.options)
-    async def _hellochannel(self, inter: SlashInteraction):
+    async def _hellochannel(self, inter: Context):
         channel = inter.get("channel")
-        if isinstance(channel, discord.TextChannel):
+        if isinstance(channel, disnake.TextChannel):
             md1.serverdata("insaname", inter.author.guild.id, channel.id, False)
             await inter.reply(f"{channel.mention}으로 인사 채널이 변경되었어요!")
 
@@ -146,7 +147,7 @@ class admin(commands.Cog):
     @slash.has_guild_permissions(manage_messages=True, manage_channels=True)
     @slash.bot_has_guild_permissions(manage_messages=True, manage_channels=True)
     @slash_command(name="setnotice", description="봇 공지 채널을 정하는 명령어", options=setnotice.options)
-    async def _setnotice(self, inter: SlashInteraction):
+    async def _setnotice(self, inter: Context):
         channel = inter.get("setnotice")
         md1.noticeusingbot(inter.author.guild.id, channel.id, False)
         await inter.reply(f"{channel.mention}으로 공지 채널이 변경되었어요!")

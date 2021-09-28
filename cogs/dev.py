@@ -1,7 +1,7 @@
-import discord
-from dislash import application_commands, slash_command
-from dislash import OptionType, SlashInteraction
-from discord.ext.commands.cog import Cog
+import disnake
+from disnake import application_commands, slash_command
+from disnake import OptionType, SlashInteraction
+from disnake.ext.commands.cog import Cog
 from .modules import module2 as md2
 from .modules import module1 as md1
 
@@ -32,7 +32,7 @@ class dev(Cog):
     @application_commands.has_guild_permissions(administrator=True)
     @application_commands.bot_has_guild_permissions(administrator=True)
     async def _onrecaptcha(self, inter: SlashInteraction):
-        role: discord.Role = inter.get_option("on").get("role")
+        role: disnake.Role = inter.get_option("on").get("role")
         md1.serverdata('recaptcha', inter.author.guild.id, role.id, False)
         await inter.reply("완료되었습니다!")
 

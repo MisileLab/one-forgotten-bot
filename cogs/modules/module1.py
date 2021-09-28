@@ -2,19 +2,19 @@ import json
 import secrets
 from datetime import datetime
 import time
-from discord.ext import commands
-from dislash.interactions.slash_interaction import SlashInteraction
+from disnake.ext import commands
+from disnake import Context
 from . import module2 as md2
-import discord
+import disnake
 import requests
 from bitlyshortener import Shortener
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from dislash import ActionRow, ButtonStyle, SelectMenu, ClickListener
+from disnake import ActionRow, ButtonStyle, SelectMenu, ClickListener
 import hashlib
-import pymysql
 from dotenv import dotenv_values
 import pytz
+import MySQLdb
 
 tokens_pool2 = []
 musicqueue = {}
@@ -335,7 +335,7 @@ def shortlink(link):
 # noinspection PyTypeChecker
 def warn(memberid: int, amount: int, get: bool):
     mysql1 = connect_cursor()
-    cursor = mysql1.cursor(pymysql.cursors.DictCursor)
+    cursor = mysql1.cursor(MySQLdb.cursors.DictCursor)
     cursor.execute("SELECT * FROM `furluckbot1`;")
     resultcursor = cursor.fetchall()
     result = cursor_to_result(resultcursor, 'id', memberid)
@@ -354,14 +354,14 @@ def warn(memberid: int, amount: int, get: bool):
 # noinspection PyTypeChecker
 def helpingyou(memberid: int):
     mysql1 = connect_cursor()
-    cursor = mysql1.cursor(pymysql.cursors.DictCursor)
+    cursor = mysql1.cursor(MySQLdb.cursors.DictCursor)
     cursor.execute("SELECT * FROM `furluckbot1`;")
     resultcursor = cursor.fetchall()
     result = cursor_to_result(resultcursor, 'id', memberid)
     if result is None:
         try:
             insertmemberdataonce(cursor, memberid)
-        except pymysql.err.IntegrityError:
+        except MySQLdb.err.IntegrityError:
             pass
     cursor.execute("SELECT * FROM `furluckbot1`;")
     resultcursor = cursor.fetchall()
@@ -391,7 +391,7 @@ class FailedDobak(Exception):
 
 def getmoney(memberid: int):
     mysql1 = connect_cursor()
-    cursor = mysql1.cursor(pymysql.cursors.DictCursor)
+    cursor = mysql1.cursor(MySQLdb.cursors.DictCursor)
     cursor.execute("SELECT * FROM `furluckbot1`;")
     resultcursor = cursor.fetchall()
     result1 = cursor_to_result(resultcursor, 'id', memberid)
@@ -406,14 +406,14 @@ def getmoney(memberid: int):
 
 
 def connect_cursor():
-    return pymysql.connect(user=mysqlconnect["user"], passwd=mysqlconnect["password"], host=mysqlconnect["host"],
+    return MySQLdb.connect(user=mysqlconnect["user"], passwd=mysqlconnect["password"], host=mysqlconnect["host"],
                            db=mysqlconnect["db"], charset=mysqlconnect["charset"], port=mysqlconnect["port"],
                            autocommit=True)
 
 
 def dobakmoney(memberid: int, money: int):
     mysql1 = connect_cursor()
-    cursor = mysql1.cursor(pymysql.cursors.DictCursor)
+    cursor = mysql1.cursor(MySQLdb.cursors.DictCursor)
     cursor.execute("SELECT * FROM `furluckbot1`;")
     resultcursor = cursor.fetchall()
     result1 = cursor_to_result(resultcursor, 'id', memberid)
@@ -455,7 +455,7 @@ def cursor_to_result(resultcursor, equal: str, id2):
 
 def miningmoney(memberid: int):
     mysql1 = connect_cursor()
-    cursor = mysql1.cursor(pymysql.cursors.DictCursor)
+    cursor = mysql1.cursor(MySQLdb.cursors.DictCursor)
     sql = "SELECT * FROM `furluckbot1`;"
     cursor.execute(sql)
     resultcursor = cursor.fetchall()
@@ -475,7 +475,7 @@ def miningmoney(memberid: int):
 
 def serverdata(name: str, guildid: int, modify, get: bool):
     mysql1 = connect_cursor()
-    cursor = mysql1.cursor(pymysql.cursors.DictCursor)
+    cursor = mysql1.cursor(MySQLdb.cursors.DictCursor)
     cursor.execute("SELECT * FROM `serverfurluckbot`;")
     resultcursor = cursor.fetchall()
     result = cursor_to_result(resultcursor, 'serverid', guildid)
@@ -501,7 +501,7 @@ def serverdata(name: str, guildid: int, modify, get: bool):
 
 def noticeusingbot(guildid: int, channelid: int, get: bool):
     mysql1 = connect_cursor()
-    cursor = mysql1.cursor(pymysql.cursors.DictCursor)
+    cursor = mysql1.cursor(MySQLdb.cursors.DictCursor)
     cursor.execute("SELECT * FROM `serverfurluckbot`;")
     resultcursor = cursor.fetchall()
     result1 = cursor_to_result(resultcursor, 'id', guildid)
@@ -533,7 +533,7 @@ class Vote:
         self.voteid = hashlib.sha3_512(
             str(secrets.SystemRandom().randint(1, 10000000)).encode('utf-8')).hexdigest()
         self.mysql = connect_cursor()
-        self.cursor = self.mysql.cursor(pymysql.cursors.DictCursor)
+        self.cursor = self.mysql.cursor(MySQLdb.cursors.DictCursor)
         self.cursor.execute("SELECT * FROM `votes`")
         resultcursor = self.cursor.fetchall()
         self.set_key(resultcursor)
@@ -768,7 +768,7 @@ def rankhistorycomponents(response):
 
 
 def rankhistoryembed(labels, response, name):
-    embed = discord.Embed(name=f"{name}의 랭크 기록")
+    embed = disnake.Embed(name=f"{name}의 랭크 기록")
     for i2 in labels:
         value: HypixelRank = response[i2]
         if value.mvp_plus:
@@ -785,7 +785,7 @@ def rankhistoryembed(labels, response, name):
     return embed
 
 
-async def except_error_information(inter: SlashInteraction, name):
+async def except_error_information(inter: Context, name):
     response = None
     response2 = None
     try:
@@ -815,7 +815,7 @@ class Responses:
         yield self.response21
 
 
-async def except_error_history(inter: SlashInteraction, name: str):
+async def except_error_history(inter: Context, name: str):
     response = None
     try:
         response: Information = HypixelAPI(playername=name).get_rankhistory()
@@ -841,7 +841,7 @@ def create_player_embed(name, response, response2):
         responseonline = "온라인"
     elif response2 is not True:
         responseonline = "오프라인"
-    embed = discord.Embed(title="플레이어 정보", description=f"플레이어 이름 : {name}")
+    embed = disnake.Embed(title="플레이어 정보", description=f"플레이어 이름 : {name}")
     embed.add_field(name="부여 받은 랭크", value=response.rank)
     embed.add_field(name="돈으로 산 랭크", value=str(
         response.packagerank).replace('PLUS', '+').replace('_', ''))
@@ -863,7 +863,7 @@ def get_helping_rank(helpingyouandme, id2):
 
 
 def get_message_edit_embed(before, after):
-    embed1 = discord.Embed(name="메시지가 변경되었어요!")
+    embed1 = disnake.Embed(name="메시지가 변경되었어요!")
     embed1.add_field(name="변경되기 전 메시지의 콘텐츠",
                      value=before.content, inline=False)
     embed1.add_field(name="변경된 후 메시지의 콘텐츠", value=after.content, inline=False)
@@ -908,7 +908,7 @@ def get_unwarn_message(reason, memberid, authorid, warndata):
     return f"<@{memberid}>님은 {reason}이라는 이유로 <@{authorid}>에 의해서 주의가 없어졌어요! 현재 주의 개수는 {warndata['warn']}개에요!"
 
 
-def make_embed_bot_information(inter: SlashInteraction, cpuinfo1, ping, client: commands.Bot):
+def make_embed_bot_information(inter: Context, cpuinfo1, ping, client: commands.Bot):
     embed1 = md2.cpuandram(inter, cpuinfo1)
     embed1.add_field(name="파이썬 버전", value=cpuinfo1["python_version"])
     embed1.add_field(name="봇 핑(ms)", value=str(ping))
@@ -919,17 +919,17 @@ def make_embed_bot_information(inter: SlashInteraction, cpuinfo1, ping, client: 
 async def get_guilds(guildid, client: commands.Bot, inter):
     try:
         guildid = int(guildid)
-        guild: discord.Guild = client.get_guild(guildid)
+        guild: disnake.Guild = client.get_guild(guildid)
         if guild is None:
             raise AttributeError
-    except (AttributeError, discord.errors.HTTPException, ValueError):
+    except (AttributeError, disnake.errors.HTTPException, ValueError):
         await inter.edit(content="그 서버는 잘못된 서버거나 제가 참여하지 않은 서버인 것 같아요!")
     else:
         return guild
 
 
 def make_guildinfo_embed(guild, inter):
-    embed1 = discord.Embed(name="서버의 정보", description=f"{guild.name}의 정보에요!")
+    embed1 = disnake.Embed(name="서버의 정보", description=f"{guild.name}의 정보에요!")
     embed1.add_field(name="길드의 부스트 티어", value=guild.premium_tier)
     embed1.add_field(name="길드의 부스트 개수",
                      value=f"{guild.premium_subscription_count}개")
@@ -942,9 +942,9 @@ def make_guildinfo_embed(guild, inter):
     return embed1
 
 
-async def mute_command(role1: discord.Role or None, inter: SlashInteraction, member=discord.Member, reason=str or None):
+async def mute_command(role1: disnake.Role or None, inter: Context, member=disnake.Member, reason=str or None):
     if role1 is None:
-        perms1 = discord.Permissions(
+        perms1 = disnake.Permissions(
             add_reactions=False, create_instant_invite=False, send_messages=False, speak=False)
         role1 = await inter.guild.create_role(name="뮤트", permissions=perms1)
     await member.add_roles(role1, reason=reason)
@@ -956,7 +956,7 @@ async def mute_command(role1: discord.Role or None, inter: SlashInteraction, mem
 
 def auth(memberid: int, recentcontentmsg: str):
     mysql1 = connect_cursor()
-    cursor = mysql1.cursor(pymysql.cursors.DictCursor)
+    cursor = mysql1.cursor(MySQLdb.cursors.DictCursor)
     cursor.execute("SELECT * FROM `auth`;")
     resultcursor = cursor.fetchall()
     result = cursor_to_result(resultcursor, 'id', memberid)
@@ -964,13 +964,13 @@ def auth(memberid: int, recentcontentmsg: str):
     return result is not None and recentcontentmsg == result["key"]
 
 
-async def auth_recaptcha(member: discord.Member, getchannel: tuple):
+async def auth_recaptcha(member: disnake.Member, getchannel: tuple):
     successauth = None
-    channel: discord.DMChannel = await member.create_dm()
+    channel: disnake.DMChannel = await member.create_dm()
     msgcontent = f"이 링크에서 인증해서 key를 채팅에 쳐주세요! https://book.chizstudio.com/?id={member.id}"
     msgcontent2 = " (이 링크는 10분동안만 가능합니다. 10분이 지날 시 나갔다 들어오면 다시 하실 수 있습니다."
     await channel.send(content=(msgcontent + msgcontent2))
-    rollin: discord.Role = member.guild.get_role(getchannel["recaptcha"])
+    rollin: disnake.Role = member.guild.get_role(getchannel["recaptcha"])
     for _i in range(600):
         async for msg2 in channel.history(limit=1):
             if auth(member.id, msg2.content) is True:

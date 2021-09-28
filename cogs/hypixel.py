@@ -1,9 +1,9 @@
-from discord.ext import commands
-from dislash import slash_command, ActionRow, SlashInteraction
-from dislash import application_commands as slash
-from dislash import OptionType as Type
+from disnake.ext import commands
+from disnake import slash_command, ActionRow, SlashInteraction
+from disnake import app_commands as slash
+from disnake import OptionType as Type
 from .modules import module1 as md1
-from discord.ext.commands import Cog
+from disnake.ext.commands import Cog
 from .modules.module2 import NoneSlashCommand
 
 playeroption = NoneSlashCommand()
@@ -17,7 +17,7 @@ class hypixel(Cog):
     # noinspection PyUnusedLocal
     @slash_command(name="hypixel", description="하이픽셀 api를 사용하는 엄청난 명령어들")
     @slash.guild_only()
-    async def _hypixel(self, inter: SlashInteraction):
+    async def _hypixel(self, inter: SlashInteraction): # empty
         pass
 
     playeroption = NoneSlashCommand()

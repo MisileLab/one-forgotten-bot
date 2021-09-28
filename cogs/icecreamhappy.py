@@ -1,6 +1,6 @@
-from discord.ext.commands import Cog
-from dislash import SlashInteraction, Type, slash_command
-from dislash import application_commands as slash
+from disnake.ext.commands import Cog
+from disnake import SlashInteraction, Type, slash_command
+from disnake import application_commands as slash
 from .modules import module2 as md2
 from .modules.module2 import NoneSlashCommand
 

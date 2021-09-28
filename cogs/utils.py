@@ -1,12 +1,12 @@
-from discord.ext import commands
+from disnake.ext import commands
 from .modules.module2 import NoneSlashCommand
-from dislash import OptionType as Type
-from dislash import application_commands as slash
-from dislash import SlashInteraction, ActionRow, Button, ButtonStyle, ClickListener, slash_command
-from discord.ext.commands import Cog
+from disnake import OptionType as Type
+from disnake import application_commands as slash
+from disnake import SlashInteraction, ActionRow, Button, ButtonStyle, ClickListener, slash_command
+from disnake.ext.commands import Cog
 import simpleeval
 import cpuinfo
-import discord
+import disnake
 import time
 from .modules import module1 as md1
 from .modules import module2 as md2
@@ -28,14 +28,14 @@ class utils(Cog):
 
     @slash_command(name="feedback", description="피드백을 줄 수 있는 명령어")
     async def _feedback(self, inter: SlashInteraction):
-        embed1 = discord.Embed(name="이 봇의 시스템 정보들", description="여러가지 링크들")
+        embed1 = disnake.Embed(name="이 봇의 시스템 정보들", description="여러가지 링크들")
         embed1.set_author(name=inter.author.name, icon_url=inter.author.avatar_url)
         embed1.add_field(name="Github", value="[링크](https://github.com/MisileLab/furluck-bot)")
         await inter.reply(embed=embed1)
 
     @slash_command(name="specialthanks", description="Thank you for helping me")
     async def _specialthanks(self, inter: SlashInteraction):
-        embed1 = discord.Embed(name="Helping hands", description="Thank you")
+        embed1 = disnake.Embed(name="Helping hands", description="Thank you")
         embed1.set_author(name=inter.author.name, icon_url=inter.author.avatar_url)
         embed1.add_field(name="Misile#2134", value="Written by me")
         embed1.add_field(name="You", value="Using my bot")
@@ -119,14 +119,14 @@ class utils(Cog):
     async def _notice(self, inter: SlashInteraction, description: str):
         md2.detect_admin(inter)
         await inter.reply(type=5)
-        embednotice = discord.Embed(title="공지", description=description, color=0xed2f09)
+        embednotice = disnake.Embed(title="공지", description=description, color=0xed2f09)
         embednotice.set_footer(text="by MisileLab", icon_url=inter.author.avatar_url)
         getchannel = md1.noticeusingbot(inter.author.guild.id, 0, True)
         for i1 in getchannel:
             try:
-                channel: discord.TextChannel = await self.Client.fetch_channel(i1["gongjiid"])
+                channel: disnake.TextChannel = await self.Client.fetch_channel(i1["gongjiid"])
                 await channel.send(embed=embednotice)
-            except (AttributeError, discord.NotFound):
+            except (AttributeError, disnake.NotFound):
                 pass
             else:
                 await inter.edit(content="공지를 성공적으로 전달했어요!")
@@ -188,10 +188,10 @@ class utils(Cog):
         userid = inter.get("serverid", inter.author.id)
         await inter.reply("유저를 찾는 중이에요!")
         try:
-            user1: discord.User = self.Client.get_user(int(userid))
+            user1: disnake.User = self.Client.get_user(int(userid))
             if user1 is None:
                 raise AttributeError
-        except (AttributeError, discord.errors.HTTPException, ValueError):
+        except (AttributeError, disnake.errors.HTTPException, ValueError):
             await inter.edit(content="그 서버는 잘못된 유저거나 제가 알 수 없는 유저인 것 같아요!")
         else:
             embed1 = md2.make_userinfo_embed(user1, inter)
@@ -210,7 +210,7 @@ class utils(Cog):
         name = inter.get("name")
         description = inter.get("description", None)
         timeout = inter.get('timeout', '3600')
-        embed = discord.Embed(title=name, description=description)
+        embed = disnake.Embed(title=name, description=description)
         component = md1.NewActionRow().add_button(style=ButtonStyle.green, name="O", custom_id="accept")
         component.add_button(style=ButtonStyle.red, name="X", custom_id="deny")
         msg = await inter.edit(embed=embed, components=component.components)
