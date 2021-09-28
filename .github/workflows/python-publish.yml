@@ -24,6 +24,6 @@ jobs:
       run:
         bandit -r ${{ env.working-directory }}
     - name: flake8
-      run: flake8 ${{ env.working-directory }}
+      run: flake8 ${{ env.working-directory }} --max-line-length=120
     - name: pylint
       run: pylint ${{ env.working-directory }} --load-plugins=pylint.extensions.bad_builtin
