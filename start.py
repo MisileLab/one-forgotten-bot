@@ -1,4 +1,4 @@
-import os #disable=missing-module-docstring
+import os  # disable=missing-module-docstring
 import disnake
 from disnake.ext import commands
 from disnake.ext.commands.errors import ExtensionAlreadyLoaded, ExtensionNotFound, ExtensionNotLoaded
@@ -106,7 +106,7 @@ async def on_message_delete(message: disnake.Message):
 
 
 @Client.event
-async def on_message_edit(before: disnake.Message, after:disnake.Message):
+async def on_message_edit(before: disnake.Message, after: disnake.Message):
     """
     on message edit event
     :param before: no edit message
