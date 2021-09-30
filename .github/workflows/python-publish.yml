@@ -27,8 +27,8 @@ jobs:
       run: flake8 ${{ env.working-directory }} --max-line-length=120
     - name: pylint
       run: |
-        pylint *.py --load-plugins=pylint.extensions.bad_builtin --max-line-length=120
+        pylint *.py --load-plugins=pylint.extensions.bad_builtin --max-line-length=120 --ignore E262
         cd cogs/
-        pylint *.py --load-plugins=pylint.extensions.bad_builtin --max-line-length=120
+        pylint *.py --load-plugins=pylint.extensions.bad_builtin --max-line-length=120 --ignore E262
         cd modules/
-        pylint *.py --load-plugins=pylint.extensions.bad_builtin --max-line-length=120
+        pylint *.py --load-plugins=pylint.extensions.bad_builtin --max-line-length=120 --ignore E262

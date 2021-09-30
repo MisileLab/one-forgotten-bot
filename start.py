@@ -1,4 +1,4 @@
-import os  # disable=missing-module-docstring
+import os  #disable=missing-module-docstring
 import disnake
 from disnake.ext import commands
 from disnake.ext.commands.errors import ExtensionAlreadyLoaded, ExtensionNotFound, ExtensionNotLoaded
