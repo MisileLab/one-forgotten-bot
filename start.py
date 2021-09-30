@@ -1,12 +1,12 @@
-import os
+import os #disable=missing-module-docstring
 import disnake
 from disnake.ext import commands
 from disnake.ext.commands.errors import ExtensionAlreadyLoaded, ExtensionNotFound, ExtensionNotLoaded
+import disnake.ext.commands.errors as errors
 from disnake.ext.commands import Context
 import koreanbots
 from cogs.modules import module1 as md1
 from cogs.modules import module2 as md2
-from disnake import application_commands, slash_commands
 from dotenv import dotenv_values
 
 dotenvvalues = dotenv_values(".env")
@@ -16,12 +16,11 @@ token = dotenvvalues["token"]
 devserver = [812339145942237204, 635336036465246218, 863950154055155712]
 Client = commands.Bot(command_prefix="/", intents=disnake.Intents.all(), help_command=None)
 Client1 = koreanbots.Koreanbots(Client, koreanbotstoken, run_task=True)
-slash = slash_commands.SlashClient(Client)
 
 icecreamhappydiscord = [635336036465246218]
 ignore_error = commands.CommandNotFound, disnake.errors.NotFound
-message_error = application_commands.MissingPermissions, application_commands.BotMissingPermissions, \
-                application_commands.CommandOnCooldown
+message_error = errors.MissingPermissions, errors.application_commands.BotMissingPermissions, \
+                errors.application_commands.CommandOnCooldown
 
 
 for file in os.listdir("cogs"):
@@ -30,20 +29,23 @@ for file in os.listdir("cogs"):
         print(f"cogs.{file[:-3]} - 로드 성공!")
 
 
-@slash.event
+@Client.event
 async def on_ready():
+    """just on ready event"""
     print("Slash Client Ready!")
 
 
 # noinspection PyUnusedLocal
 @Client.event
 async def on_command_error(error):
+    """not slash command error"""
     if not isinstance(error, ignore_error):
         raise error
 
 
-@slash.event
+@Client.event
 async def on_slash_command_error(inter, error):
+    """slash command error"""
     if not isinstance(error, ignore_error):
         if isinstance(error, message_error):
             await md2.sub_error_handler(error, inter).ErrorHandling()
@@ -53,6 +55,10 @@ async def on_slash_command_error(inter, error):
 
 @Client.event
 async def on_member_join(member: disnake.Member):
+    """
+    when member join event
+    :param member: disnake.Member object
+    """
     embed = md2.make_member_join_embed(member)
     getchannel = md1.serverdata("insaname", member.guild.id, 123, True)
     try:
@@ -66,7 +72,8 @@ async def on_member_join(member: disnake.Member):
 
 
 @Client.event
-async def on_member_remove(member):
+async def on_member_remove(member: disnake.Member):
+    """same as on_member_join except this is member remove event"""
     embed = md2.make_member_remove_embed(member)
     getchannel = md1.serverdata("insaname", member.guild.id, 123, True)
     try:
@@ -78,7 +85,11 @@ async def on_member_remove(member):
 
 
 @Client.event
-async def on_message_delete(message):
+async def on_message_delete(message: disnake.Message):
+    """
+    on member delete event
+    :param message disnake.Member object
+    """
     if message.author.bot is False:
         embed1 = disnake.Embed(name="메시지가 삭제되었어요!")
         embed1.add_field(name="삭제된 메시지의 내용", value=message.content, inline=False)
@@ -95,7 +106,14 @@ async def on_message_delete(message):
 
 
 @Client.event
-async def on_message_edit(before, after):
+async def on_message_edit(before: disnake.Message, after:disnake.Message):
+    """
+    on message edit event
+    :param before: no edit message
+    :type disnake.Message: Message
+    :param after: edited message
+    :type disnake.Message: Message
+    """
     if after.author.bot is True:
         return
     try:
@@ -116,11 +134,13 @@ async def on_message_edit(before, after):
 
 @Client.command(name="hellothisisverification")
 async def oneforgottendiscordslashcommandkoreanbotlistnoslashcommandlol(ctx):
+    """koreanbots looks like sus lol"""
     await ctx.send("Misile#1231")
 
 
-@slash.command(name="cogs", guild_ids=devserver)
+@Client.command(name="cogs", guild_ids=devserver)
 async def _cogs(inter: Context):
+    """just cogs"""
     pass  # empty cause this command is need to subcommand
 
 unloadoption = md2.NoneSlashCommand()
@@ -129,6 +149,10 @@ unloadoption.add_option(name="cogname", description="cog name", required=True)
 
 @_cogs.sub_command(name="unload", description="unload cog", options=unloadoption.options, guild_ids=devserver)
 async def _unloadcogs(inter: Context):
+    """
+    unload cogs
+    :param inter: Context object
+    """
     cogname = inter.get_option("unload").get("cogname")
     try:
         Client.unload_extension(f"cogs.{cogname}")
@@ -145,6 +169,7 @@ async def _unloadcogs(inter: Context):
 
 @_cogs.sub_command(name="load", description="load cog", options=unloadoption.options, guild_ids=devserver)
 async def _loadcogs(inter: Context):
+    """same as unload cogs except this is load cogs"""
     cogname = inter.get_option("load").get("cogname")
     try:
         Client.load_extension(f"cogs.{cogname}")
@@ -161,6 +186,7 @@ async def _loadcogs(inter: Context):
 
 @_cogs.sub_command(name="reload", description="reload cogs", guild_ids=devserver)
 async def _reloadcogs(inter: Context):
+    """same as reload cogs except this is load cogs"""
     for file in os.listdir("cogs"):
         if file.endswith(".py"):
             try:
