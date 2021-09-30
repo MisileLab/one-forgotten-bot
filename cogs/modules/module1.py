@@ -32,13 +32,13 @@ print(tokens_pool2)
 config = dotenv_values(".env")
 hypixel_api_key = config['hypixelapi']
 mysqlconnect = {
-                "host": config['host'],
-                "user": config['user'],
-                "password": config['password'],
-                "db": config['db'],
-                "charset": config['charset'],
-                "port": int(config['port'])
-                }
+    "host": config['host'],
+    "user": config['user'],
+    "password": config['password'],
+    "db": config['db'],
+    "charset": config['charset'],
+    "port": int(config['port'])
+    }
 
 
 def tz_from_utc_ms_ts(utc_ms_ts, tz_info):
@@ -52,38 +52,23 @@ def unix_to_datetime(unixtime):
 
 def todaycalculate():
     datetimetoday = datetime.today()
-    return (
-        str(datetimetoday.year)
-        + '년 '
-        + str(datetimetoday.month)
-        + '월 '
-        + str(datetimetoday.day)
-        + '일 '
-        + str(datetimetoday.hour)
-        + '시 '
-        + str(datetimetoday.minute)
-        + '분 '
-        + str(datetimetoday.second)
-        + '초 '
-    )
+    year = datetimetoday.year
+    month = datetimetoday.month
+    day = datetimetoday.day
+    hour = datetimetoday.hour
+    minute = datetimetoday.minute
+    second = datetimetoday.second
+    return f"{year}년 {month}월 {day}일 {hour}시 {minute}분 {second}초"
 
 
 def makeformat(datetime1):
-    return (
-        str(datetime1.year)
-        + '년 '
-        + str(datetime1.month)
-        + '월 '
-        + str(datetime1.day)
-        + '일 '
-        + str(datetime1.hour)
-        + '시 '
-        + str(datetime1.minute)
-        + '분 '
-        + str(datetime1.second)
-        + '초 '
-    )
-
+    year = datetime1.year
+    month = datetime1.month
+    day = datetime1.day
+    hour = datetime1.hour
+    minute = datetime1.minute
+    second = datetime1.second
+    return f"{year}년 {month}월 {day}일 {hour}시 {minute}분 {second}초"
 
 class Weather:
     def __init__(self, detectdict: dict):
