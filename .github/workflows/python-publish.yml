@@ -26,4 +26,7 @@ jobs:
     - name: flake8
       run: flake8 ${{ env.working-directory }} --max-line-length=120
     - name: pylint
-      run: pylint ${{ env.working-directory }} --load-plugins=pylint.extensions.bad_builtin
+      run: |
+        pylint *.py --load-plugins=pylint.extensions.bad_builtin
+        cd modules/
+        pylint *.py --load-plugins=pylint.extensions.bad_builtin
