@@ -38,7 +38,7 @@ mysqlconnect = {
     "db": config['db'],
     "charset": config['charset'],
     "port": int(config['port'])
-    }
+}
 
 
 def tz_from_utc_ms_ts(utc_ms_ts, tz_info):
@@ -69,6 +69,7 @@ def makeformat(datetime1):
     minute = datetime1.minute
     second = datetime1.second
     return f"{year}년 {month}월 {day}일 {hour}시 {minute}분 {second}초"
+
 
 class Weather:
     def __init__(self, detectdict: dict):
