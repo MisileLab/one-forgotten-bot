@@ -20,7 +20,7 @@ Client1 = koreanbots.Koreanbots(Client, koreanbotstoken, run_task=True)
 icecreamhappydiscord = [635336036465246218]
 ignore_error = commands.CommandNotFound, disnake.errors.NotFound
 message_error = errors.MissingPermissions, errors.application_commands.BotMissingPermissions, \
-                errors.application_commands.CommandOnCooldown
+    errors.application_commands.CommandOnCooldown
 
 
 for file in os.listdir("cogs"):
