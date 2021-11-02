@@ -15,4 +15,4 @@ koreanbots==2.0.0
 simpleeval==0.9.11
 pillow==8.4.0
 mysqlclient==2.0.3
-disnake==2.1.5
+disnake==2.2.1
