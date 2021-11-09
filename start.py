@@ -93,7 +93,7 @@ async def on_message_delete(message: disnake.Message):
     :param message disnake.Member object
     """
     if message.author.bot is False:
-        embed1 = disnake.Embed(title=   "메시지가 삭제되었어요!")
+        embed1 = disnake.Embed(title="메시지가 삭제되었어요!")
         embed1.add_field(name="삭제된 메시지의 내용", value=message.content, inline=False)
         embed1.add_field(name="삭제된 메시지를 보낸 사람", value=f"<@{message.author.id}>", inline=False)
         embed1.add_field(name="삭제된 메시지가 보내진 채널", value=message.channel.mention, inline=False)
