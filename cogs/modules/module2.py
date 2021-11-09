@@ -113,16 +113,14 @@ def cpuandram(inter: Context, cpuinfo1):
     embed1.add_field(
         name="램 전체 용량",
         value=(
-            str(round(psutil.virtual_memory().total / (1024 ** 2 * 1024)))
-            + "GB"
+            str(round(psutil.virtual_memory().total / (1024 ** 2 * 1024))) + "GB"
         ),
     )
 
     embed1.add_field(
         name="램 사용 용량",
         value=(
-            str(round(psutil.virtual_memory().used / (1024 ** 2 * 1024)))
-            + "GB"
+            str(round(psutil.virtual_memory().used / (1024 ** 2 * 1024))) + "GB"
         ),
     )
 
