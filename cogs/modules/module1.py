@@ -856,6 +856,7 @@ def get_message_edit_embed(before, after):
     embed1.add_field(name="메시지를 변경한 사람",
                      value=f"<@{after.author.id}>", inline=False)
     embed1.set_footer(text=todaycalculate())
+    return embed1
 
 
 async def vote_listener(on_click: ClickListener, votelol, embed, inter):

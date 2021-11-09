@@ -6,9 +6,10 @@ from disnake.ext.commands.errors import ExtensionAlreadyLoaded, ExtensionNotFoun
 from disnake.ext.commands import errors
 from disnake.ext.commands import Context
 import koreanbots
+from dotenv import dotenv_values
+
 from cogs.modules import module1 as md1
 from cogs.modules import module2 as md2
-from dotenv import dotenv_values
 
 dotenvvalues = dotenv_values(".env")
 koreanbotstoken = dotenvvalues["koreanbotstoken"]
@@ -16,7 +17,7 @@ token = dotenvvalues["token"]
 
 devserver = [812339145942237204, 635336036465246218, 863950154055155712]
 Client = commands.Bot(command_prefix="/", intents=disnake.Intents.all(), help_command=None)
-Client1 = koreanbots.Koreanbots(Client, koreanbotstoken, run_task=True)
+Client1 = koreanbots.Koreanbots(client=Client, api_key=koreanbotstoken, run_task=True)
 
 icecreamhappydiscord = [635336036465246218]
 ignore_error = commands.CommandNotFound, disnake.errors.NotFound
@@ -92,7 +93,7 @@ async def on_message_delete(message: disnake.Message):
     :param message disnake.Member object
     """
     if message.author.bot is False:
-        embed1 = disnake.Embed(name="메시지가 삭제되었어요!")
+        embed1 = disnake.Embed(title=   "메시지가 삭제되었어요!")
         embed1.add_field(name="삭제된 메시지의 내용", value=message.content, inline=False)
         embed1.add_field(name="삭제된 메시지를 보낸 사람", value=f"<@{message.author.id}>", inline=False)
         embed1.add_field(name="삭제된 메시지가 보내진 채널", value=message.channel.mention, inline=False)
@@ -140,9 +141,10 @@ async def oneforgottendiscordslashcommandkoreanbotlistnoslashcommandlol(ctx):
 
 
 @Client.command(name="cogs", guild_ids=devserver)
-async def _cogs(inter: Context):
+async def _cogs():
     """just cogs"""
-    pass  # empty cause this command is need to subcommand
+    a = 10
+    del a
 
 unloadoption = md2.NoneSlashCommand()
 unloadoption.add_option(name="cogname", description="cog name", required=True)
@@ -188,16 +190,16 @@ async def _loadcogs(inter: Context):
 @_cogs.sub_command(name="reload", description="reload cogs", guild_ids=devserver)
 async def _reloadcogs(inter: Context):
     """same as load cogs except this is reload cogs"""
-    for file in os.listdir("cogs"):
-        if file.endswith(".py"):
+    for filea in os.listdir("cogs"):
+        if filea.endswith(".py"):
             try:
-                Client.unload_extension(f"cogs.{file[:-3]}")
-                Client.load_extension(f"cogs.{file[:-3]}")
+                Client.unload_extension(f"cogs.{filea[:-3]}")
+                Client.load_extension(f"cogs.{filea[:-3]}")
             except Exception:
-                print(f'cogs.{file[:-3]} error')
+                print(f'cogs.{filea[:-3]} error')
                 raise
             else:
-                print(f"cogs.{file[:-3]} - 리로드 성공!")
+                print(f"cogs.{filea[:-3]} - 리로드 성공!")
     await inter.reply("리로드 성공!")
 
 
