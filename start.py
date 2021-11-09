@@ -1,10 +1,17 @@
-import os  #disable=missing-module-docstring
+"""os"""
+import os
+
+"""disnake"""
 import disnake
 from disnake.ext import commands
 from disnake.ext.commands.errors import ExtensionAlreadyLoaded, ExtensionNotFound, ExtensionNotLoaded
-import disnake.ext.commands.errors as errors
+from disnake.ext.commands import errors
 from disnake.ext.commands import Context
+
+"""lol koreanbots py-sdk just trash I think"""
 import koreanbots
+
+"""load cogs and .env"""
 from cogs.modules import module1 as md1
 from cogs.modules import module2 as md2
 from dotenv import dotenv_values
@@ -48,7 +55,7 @@ async def on_slash_command_error(inter, error):
     """slash command error"""
     if not isinstance(error, ignore_error):
         if isinstance(error, message_error):
-            await md2.sub_error_handler(error, inter).ErrorHandling()
+            await md2.sub_error_handler(error, inter).errorhandling()
         else:
             raise error
 

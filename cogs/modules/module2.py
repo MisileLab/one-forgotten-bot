@@ -110,10 +110,22 @@ def cpuandram(inter: Context, cpuinfo1):
     embed1.set_author(name=inter.author.name, icon_url=inter.author.avatar_url)
     embed1.add_field(name="CPU 이름", value=cpuinfo1["brand_raw"])
     embed1.add_field(name="CPU Hz", value=cpuinfo1["hz_actual_friendly"])
-    embed1.add_field(name="램 전체 용량", value=str(
-        round(psutil.virtual_memory().total / (1024 * 1024 * 1024))) + "GB")
-    embed1.add_field(name="램 사용 용량", value=str(
-        round(psutil.virtual_memory().used / (1024 * 1024 * 1024))) + "GB")
+    embed1.add_field(
+        name="램 전체 용량",
+        value=(
+            str(round(psutil.virtual_memory().total / (1024 ** 2 * 1024)))
+            + "GB"
+        ),
+    )
+
+    embed1.add_field(
+        name="램 사용 용량",
+        value=(
+            str(round(psutil.virtual_memory().used / (1024 ** 2 * 1024)))
+            + "GB"
+        ),
+    )
+
     embed1.add_field(name="램 용량 퍼센테이지(%)", value=str(
         psutil.virtual_memory().percent))
     return embed1
