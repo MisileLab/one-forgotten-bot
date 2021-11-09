@@ -1,17 +1,11 @@
-"""os"""
+"""pylint module docstring why neeeeeed lool"""
 import os
-
-"""disnake"""
 import disnake
 from disnake.ext import commands
 from disnake.ext.commands.errors import ExtensionAlreadyLoaded, ExtensionNotFound, ExtensionNotLoaded
 from disnake.ext.commands import errors
 from disnake.ext.commands import Context
-
-"""lol koreanbots py-sdk just trash I think"""
 import koreanbots
-
-"""load cogs and .env"""
 from cogs.modules import module1 as md1
 from cogs.modules import module2 as md2
 from dotenv import dotenv_values
