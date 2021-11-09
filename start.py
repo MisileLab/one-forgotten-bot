@@ -187,7 +187,7 @@ async def _loadcogs(inter: Context):
 
 @_cogs.sub_command(name="reload", description="reload cogs", guild_ids=devserver)
 async def _reloadcogs(inter: Context):
-    """same as reload cogs except this is load cogs"""
+    """same as load cogs except this is reload cogs"""
     for file in os.listdir("cogs"):
         if file.endswith(".py"):
             try:
