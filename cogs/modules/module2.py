@@ -129,18 +129,6 @@ def cpuandram(inter: Context, cpuinfo1):
     return embed1
 
 
-def guckristring(reason: str or None, inter: Context, member: disnake.Member):
-    if reason is None:
-        return f"<@{inter.author.id}>님이 <@{member.id}>님을 격리하였습니다!"
-    return f"<@{inter.author.id}님이 {reason}이라는 이유로 <@{member.id}님을 격리하였습니다!"
-
-
-def notguckristring(reason: str or None, inter: Context, member: disnake.Member):
-    if reason is None:
-        return (f"<@{inter.author.id}>님이 <@{member.id}>님을 격리해제 하였습니다!")
-    return (f"<@{inter.author.id}님이 {reason}이라는 이유로 <@{member.id}님을 격리해제 하였습니다!")
-
-
 def make_member_remove_embed(member: disnake.Member):
     embed = disnake.Embed(title="멤버 퇴장", description=f'{member.name}님이 {member.guild.name}에서 퇴장했어요. ㅠㅠ', color=0xff4747)
     embed.add_field(name='현재 인원', value=str(len([m for m in member.guild.members if not m.bot])) + '명')
