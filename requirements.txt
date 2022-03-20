@@ -34,7 +34,7 @@ soupsieve==2.3
 SQLAlchemy==1.4.26
 trio==0.19.0
 trio-websocket==0.9.2
-typing-extensions==3.10.0.2
+typing-extensions==4.1.1
 urllib3==1.26.7
 wsproto==1.0.0
 yarl==1.7.2
