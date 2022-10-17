@@ -31,7 +31,7 @@ six==1.16.0
 sniffio==1.2.0
 sortedcontainers==2.4.0
 soupsieve==2.3
-SQLAlchemy==1.4.26
+SQLAlchemy==1.4.42
 trio==0.19.0
 trio-websocket==0.9.2
 typing-extensions==3.10.0.2
